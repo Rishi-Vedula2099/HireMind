@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
-  Brain, CheckCircle, XCircle, TrendingUp, AlertCircle,
-  ArrowLeft, BarChart3, BookOpen, Lightbulb
+  Brain, CheckCircle, XCircle, TrendingUp, AlertTriangle,
+  ArrowLeft, BarChart3, Lightbulb, Terminal, Zap
 } from "lucide-react";
 import { getReport } from "@/lib/api";
 
@@ -26,18 +26,15 @@ interface Report {
   round_breakdown: RoundBreakdown[];
 }
 
-function ScoreMeter({ score }: { score: number }) {
+function NeonScoreRing({ score }: { score: number }) {
   const pct = (score / 10) * 100;
-  const color = score >= 7 ? "#4ade80" : score >= 5 ? "#fbbf24" : "#f87171";
+  const color = score >= 7 ? "var(--nf-green)" : score >= 5 ? "var(--nf-amber)" : "var(--nf-magenta)";
+  const glow  = score >= 7 ? "var(--glow-green)" : score >= 5 ? "var(--glow-amber)" : "var(--glow-magenta)";
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div
-        className="score-ring text-2xl font-black"
-        style={{ ["--pct" as string]: pct, color } as React.CSSProperties}
-      >
-        <span>{score.toFixed(1)}</span>
-      </div>
-      <p className="text-slate-400 text-sm">Overall Score</p>
+    <div className="nf-score-ring" style={{ "--pct": pct, "--ring-color": color, boxShadow: glow } as React.CSSProperties}>
+      <span className="nf-heading" style={{ fontSize: "1.3rem", color, textShadow: `0 0 20px ${color}` }}>
+        {score.toFixed(1)}
+      </span>
     </div>
   );
 }
@@ -57,134 +54,172 @@ export default function ReportPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <Brain className="w-10 h-10 text-indigo-400 animate-pulse" />
-        <p className="text-slate-400">Loading your report...</p>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+        <div className="nf-animate-spin" style={{ width: 44, height: 44, borderRadius: "50%", border: "2px solid var(--nf-border)", borderTopColor: "var(--nf-cyan)", boxShadow: "var(--glow-cyan)" }} />
+        <p className="nf-mono" style={{ fontSize: "0.78rem", color: "var(--nf-text-3)" }}>// loading report...</p>
       </div>
     );
   }
 
   if (!report) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <AlertCircle className="w-10 h-10 text-red-400" />
-        <p className="text-slate-400">Report not found. Complete the interview first.</p>
-        <Link href="/dashboard" className="btn-primary text-sm">Back to Dashboard</Link>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+        <AlertTriangle className="w-10 h-10" style={{ color: "var(--nf-magenta)" }} />
+        <p style={{ color: "var(--nf-text-2)" }}>Report not found. Complete the interview first.</p>
+        <Link href="/dashboard" className="nf-btn nf-btn-secondary text-sm">Back to Dashboard</Link>
       </div>
     );
   }
 
+  const scoreColor = (s: number) =>
+    s >= 7 ? "var(--nf-green)" : s >= 5 ? "var(--nf-amber)" : "var(--nf-magenta)";
+
   return (
-    <div className="min-h-screen px-4 py-10 max-w-4xl mx-auto">
-      {/* Back */}
-      <Link href="/dashboard" className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm mb-8 transition-colors">
-        <ArrowLeft className="w-4 h-4" /> Dashboard
-      </Link>
+    <div style={{ minHeight: "100vh", background: "var(--nf-void)", padding: "2.5rem 1.5rem" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
 
-      {/* Verdict Banner */}
-      <div className={`glass p-8 mb-8 rounded-2xl border ${report.hire_decision ? "border-emerald-500/30" : "border-red-500/30"}`}>
-        <div className="flex flex-col md:flex-row items-center gap-8">
-          {/* Score meter */}
-          <ScoreMeter score={report.overall_score} />
+        {/* Back */}
+        <Link href="/dashboard" className="flex items-center gap-2 nf-mono mb-8 transition-colors"
+          style={{ fontSize: "0.75rem", color: "var(--nf-text-3)", textDecoration: "none", width: "fit-content" }}>
+          <ArrowLeft className="w-3.5 h-3.5" /> cd ~/dashboard
+        </Link>
 
-          {/* Verdict */}
-          <div className="flex-1 text-center md:text-left">
-            <div className={`inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-lg mb-3 ${report.hire_decision ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/20" : "bg-red-500/15 text-red-300 border border-red-500/20"}`}>
-              {report.hire_decision
-                ? <><CheckCircle className="w-5 h-5" /> Hire — Strong Candidate</>
-                : <><XCircle className="w-5 h-5" /> No Hire — Keep Practicing</>}
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 mb-8">
+          <Brain className="w-4 h-4" style={{ color: "var(--nf-cyan)" }} />
+          <span className="nf-heading" style={{ color: "var(--nf-cyan)", fontSize: "0.9rem" }}>HIREMIND.AI</span>
+          <span style={{ color: "var(--nf-border)" }}>/</span>
+          <span className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>report[{sessionId}]</span>
+        </div>
+
+        {/* ── Verdict Card ─────────────────────────────────────────── */}
+        <div className="nf-card p-8 mb-6 nf-animate-up" style={{
+          borderColor: report.hire_decision ? "rgba(0,255,136,0.35)" : "rgba(255,45,120,0.35)",
+          boxShadow: report.hire_decision ? "var(--glow-green)" : "var(--glow-magenta)",
+        }}>
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            {/* Score ring */}
+            <div className="flex flex-col items-center gap-2">
+              <NeonScoreRing score={report.overall_score} />
+              <p className="nf-mono" style={{ fontSize: "0.65rem", color: "var(--nf-text-3)" }}>OVERALL</p>
             </div>
-            <p className="text-slate-400 text-sm">
-              Your interview has been analyzed by a FAANG-level AI evaluator.
-              {report.hire_decision
-                ? " You demonstrated strong technical and communication skills."
-                : " Keep practicing the areas below to improve your score."}
-            </p>
-          </div>
-        </div>
-      </div>
 
-      {/* Round Breakdown */}
-      {report.round_breakdown?.length > 0 && (
-        <div className="glass p-6 mb-6">
-          <h2 className="font-bold text-lg mb-4 flex items-center gap-2"><BarChart3 className="w-5 h-5 text-indigo-400" /> Round Breakdown</h2>
-          <div className="space-y-4">
-            {report.round_breakdown.map((r) => {
-              const pct = (r.average_score / 10) * 100;
-              const barColor = r.average_score >= 7 ? "#4ade80" : r.average_score >= 5 ? "#fbbf24" : "#f87171";
-              return (
-                <div key={r.round_type}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium">{r.round_type}</span>
-                    <span style={{ color: barColor }}>{r.average_score.toFixed(1)}/10 · {r.questions_answered} Q&apos;s</span>
-                  </div>
-                  <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${pct}%`, background: barColor }} />
-                  </div>
+            {/* Verdict text */}
+            <div className="flex flex-col gap-3 text-center md:text-left flex-1">
+              <div className="flex items-center justify-center md:justify-start gap-2">
+                <div className={`nf-badge nf-mono`} style={{
+                  fontSize: "0.85rem",
+                  padding: "0.5rem 1.25rem",
+                  background: report.hire_decision ? "rgba(0,255,136,0.1)" : "rgba(255,45,120,0.1)",
+                  color: report.hire_decision ? "var(--nf-green)" : "var(--nf-magenta)",
+                  border: `1px solid ${report.hire_decision ? "rgba(0,255,136,0.3)" : "rgba(255,45,120,0.3)"}`,
+                  boxShadow: report.hire_decision ? "var(--glow-green)" : "var(--glow-magenta)",
+                }}>
+                  {report.hire_decision ? <><CheckCircle className="w-4 h-4" /> HIRE — STRONG CANDIDATE</> : <><XCircle className="w-4 h-4" /> NO HIRE — KEEP TRAINING</>}
                 </div>
-              );
-            })}
+              </div>
+              <p style={{ fontSize: "0.9rem", color: "var(--nf-text-2)", lineHeight: 1.6 }}>
+                {report.hire_decision
+                  ? "Your performance cleared the bar. You demonstrated strong technical depth and clear communication."
+                  : "You have clear growth areas. Focus on the improvement roadmap below and try again."}
+              </p>
+            </div>
           </div>
         </div>
-      )}
 
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
-        {/* Strengths */}
-        <div className="glass p-6">
-          <h2 className="font-bold text-lg mb-4 flex items-center gap-2 text-emerald-300">
-            <CheckCircle className="w-5 h-5" /> Strengths
-          </h2>
-          <ul className="space-y-3">
-            {(report.strengths || []).map((s, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-                <span className="text-emerald-400 mt-0.5 shrink-0">✓</span> {s}
-              </li>
-            ))}
-          </ul>
+        {/* ── Round Breakdown ──────────────────────────────────────── */}
+        {report.round_breakdown?.length > 0 && (
+          <div className="nf-card p-6 mb-5 nf-animate-up" style={{ animationDelay: "80ms" }}>
+            <div className="flex items-center gap-2 mb-5">
+              <BarChart3 className="w-4 h-4" style={{ color: "var(--nf-cyan)" }} />
+              <span className="nf-badge nf-badge-cyan nf-mono" style={{ fontSize: "0.65rem" }}>ROUND_BREAKDOWN</span>
+            </div>
+            <div className="space-y-5">
+              {report.round_breakdown.map((r) => {
+                const pct = (r.average_score / 10) * 100;
+                const col = scoreColor(r.average_score);
+                return (
+                  <div key={r.round_type}>
+                    <div className="flex justify-between mb-2">
+                      <span className="nf-mono" style={{ fontSize: "0.78rem", color: "var(--nf-text-2)" }}>{r.round_type}</span>
+                      <span className="nf-mono" style={{ fontSize: "0.72rem", color: col }}>
+                        {r.average_score.toFixed(1)}/10 · {r.questions_answered} Q
+                      </span>
+                    </div>
+                    <div className="nf-progress-track">
+                      <div className="nf-progress-fill" style={{
+                        width: `${pct}%`,
+                        background: `linear-gradient(90deg, ${col}, ${col}99)`,
+                        boxShadow: `0 0 10px ${col}60`,
+                      }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── Strengths + Weaknesses ───────────────────────────────── */}
+        <div className="grid md:grid-cols-2 gap-5 mb-5">
+          <div className="nf-card p-6 nf-card-green nf-animate-up" style={{ animationDelay: "160ms" }}>
+            <div className="flex items-center gap-2 mb-4">
+              <CheckCircle className="w-4 h-4" style={{ color: "var(--nf-green)" }} />
+              <span className="nf-badge nf-badge-green nf-mono" style={{ fontSize: "0.62rem" }}>STRENGTHS</span>
+            </div>
+            <ul className="space-y-3">
+              {(report.strengths || []).map((s, i) => (
+                <li key={i} className="flex items-start gap-2" style={{ fontSize: "0.875rem", color: "var(--nf-text-2)" }}>
+                  <span className="nf-mono" style={{ color: "var(--nf-green)", marginTop: "0.1rem", flexShrink: 0 }}>✓</span> {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="nf-card p-6 nf-card-magenta nf-animate-up" style={{ animationDelay: "240ms" }}>
+            <div className="flex items-center gap-2 mb-4">
+              <AlertTriangle className="w-4 h-4" style={{ color: "var(--nf-magenta)" }} />
+              <span className="nf-badge nf-badge-magenta nf-mono" style={{ fontSize: "0.62rem" }}>WEAKNESSES</span>
+            </div>
+            <ul className="space-y-3">
+              {(report.weaknesses || []).map((w, i) => (
+                <li key={i} className="flex items-start gap-2" style={{ fontSize: "0.875rem", color: "var(--nf-text-2)" }}>
+                  <span className="nf-mono" style={{ color: "var(--nf-magenta)", marginTop: "0.1rem", flexShrink: 0 }}>✗</span> {w}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Weaknesses */}
-        <div className="glass p-6">
-          <h2 className="font-bold text-lg mb-4 flex items-center gap-2 text-red-300">
-            <AlertCircle className="w-5 h-5" /> Areas to Improve
-          </h2>
-          <ul className="space-y-3">
-            {(report.weaknesses || []).map((w, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-                <span className="text-red-400 mt-0.5 shrink-0">✗</span> {w}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+        {/* ── Improvement Roadmap ──────────────────────────────────── */}
+        {(report.improvement_roadmap || []).length > 0 && (
+          <div className="nf-card p-6 mb-8 nf-animate-up" style={{ animationDelay: "320ms" }}>
+            <div className="flex items-center gap-2 mb-5">
+              <Lightbulb className="w-4 h-4" style={{ color: "var(--nf-amber)" }} />
+              <span className="nf-badge nf-badge-amber nf-mono" style={{ fontSize: "0.62rem" }}>IMPROVEMENT_ROADMAP</span>
+            </div>
+            <ol className="space-y-4">
+              {report.improvement_roadmap.map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="nf-heading nf-gradient-text shrink-0" style={{ fontSize: "1.2rem", lineHeight: 1.2 }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p style={{ fontSize: "0.875rem", color: "var(--nf-text-2)", lineHeight: 1.6 }}>{item}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
 
-      {/* Roadmap */}
-      {report.improvement_roadmap?.length > 0 && (
-        <div className="glass p-6 mb-8">
-          <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
-            <Lightbulb className="w-5 h-5 text-amber-400" /> Improvement Roadmap
-          </h2>
-          <ol className="space-y-3">
-            {report.improvement_roadmap.map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
-                <span className="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-300 text-xs flex items-center justify-center shrink-0 font-bold">
-                  {i + 1}
-                </span>
-                {item}
-              </li>
-            ))}
-          </ol>
+        {/* ── CTA ─────────────────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row gap-4 nf-animate-up" style={{ animationDelay: "400ms" }}>
+          <Link href="/interview/setup" className="nf-btn nf-btn-primary" style={{ flex: 1, justifyContent: "center", padding: "0.9rem" }}>
+            <Zap className="w-4 h-4" /> Practice Again
+          </Link>
+          <Link href="/dashboard" className="nf-btn nf-btn-secondary" style={{ flex: 1, justifyContent: "center", padding: "0.9rem" }}>
+            <TrendingUp className="w-4 h-4" /> View Dashboard
+          </Link>
         </div>
-      )}
-
-      {/* CTA */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Link href="/interview/setup" className="btn-primary flex-1 justify-center py-3">
-          <TrendingUp className="w-4 h-4" /> Practice Again
-        </Link>
-        <Link href="/dashboard" className="btn-secondary flex-1 justify-center py-3">
-          <BookOpen className="w-4 h-4" /> View All Reports
-        </Link>
       </div>
     </div>
   );

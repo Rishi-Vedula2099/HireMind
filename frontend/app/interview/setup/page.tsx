@@ -4,17 +4,25 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-import { Brain, Upload, FileText, Loader2, ArrowRight, Building2, Briefcase, Mic } from "lucide-react";
+import { Brain, Upload, FileText, Loader2, ArrowRight, Building2, Briefcase, Mic, Terminal, CheckCircle } from "lucide-react";
 import { uploadResume, setupInterview } from "@/lib/api";
 import { useResumeStore } from "@/lib/stores/resumeStore";
 import { useInterviewStore } from "@/lib/stores/interviewStore";
 
-const COMPANIES = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Netflix", "Stripe", "Spotify", "Startup"];
-const ROLES = ["Software Engineer (SDE)", "Backend Engineer", "Frontend Engineer", "Full Stack Engineer", "ML Engineer", "Data Engineer", "DevOps/SRE"];
+const COMPANIES = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Netflix", "Stripe", "Startup"];
+const ROLES = [
+  "Software Engineer (SDE)",
+  "Backend Engineer",
+  "Frontend Engineer",
+  "Full Stack Engineer",
+  "ML Engineer",
+  "Data Engineer",
+  "DevOps / SRE",
+];
 
 export default function InterviewSetupPage() {
   const router = useRouter();
-  const { setResume, parsedData, resumeId, isUploading, setUploading, setError } = useResumeStore();
+  const { setResume, parsedData, resumeId, isUploading, setUploading, setError, clear } = useResumeStore();
   const { setSetupInfo, setSession } = useInterviewStore();
 
   const [selectedCompany, setSelectedCompany] = useState("");
@@ -30,11 +38,10 @@ export default function InterviewSetupPage() {
     try {
       const result = await uploadResume(file, selectedRole || "Software Engineer");
       setResume(result.resume_id, file.name, result.parsed_data);
-      toast.success(`Resume parsed! Found ${result.parsed_data?.skills?.length ?? 0} skills.`);
-    } catch (e) {
-      const msg = "Failed to upload resume. Try again.";
-      setError(msg);
-      toast.error(msg);
+      toast.success(`Resume analyzed — ${result.parsed_data?.skills?.length ?? 0} skills detected.`);
+    } catch {
+      setError("Upload failed. Check file type and size.");
+      toast.error("Upload failed. Try again.");
     } finally {
       setUploading(false);
     }
@@ -42,11 +49,14 @@ export default function InterviewSetupPage() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "application/pdf": [".pdf"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"] },
+    accept: {
+      "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+    },
     maxFiles: 1,
   });
 
-  const canStart = resumeId && selectedCompany && selectedRole;
+  const canStart = !!(resumeId && selectedCompany && selectedRole);
 
   const handleStart = async () => {
     if (!canStart) return;
@@ -63,150 +73,208 @@ export default function InterviewSetupPage() {
       setSession(session.id, session.interview_plan);
       router.push(`/interview/${session.id}`);
     } catch {
-      toast.error("Failed to create interview session.");
+      toast.error("Failed to create session. Try again.");
     } finally {
       setIsStarting(false);
     }
   };
 
+  const stepDone = (n: number) => {
+    if (n === 1) return !!parsedData;
+    if (n === 2) return !!(selectedCompany && selectedRole);
+    return false;
+  };
+
   return (
-    <div className="min-h-screen px-4 py-12 max-w-3xl mx-auto" style={{ background: "var(--surface-1)" }}>
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-indigo-300 text-sm mb-5">
-          <Brain className="w-4 h-4" /> Interview Setup
+    <div style={{ minHeight: "100vh", background: "var(--nf-void)", padding: "5rem 1.5rem 3rem" }}>
+      {/* Back nav */}
+      <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <div className="flex items-center gap-2 mb-8">
+          <Brain className="w-5 h-5" style={{ color: "var(--nf-cyan)" }} />
+          <span className="nf-heading" style={{ color: "var(--nf-cyan)" }}>HIREMIND.AI</span>
+          <span style={{ color: "var(--nf-border)" }}>/</span>
+          <span className="nf-mono" style={{ fontSize: "0.78rem", color: "var(--nf-text-3)" }}>setup_interview()</span>
         </div>
-        <h1 className="text-4xl font-bold mb-2">Set Up Your<span className="gradient-text"> AI Interview</span></h1>
-        <p className="text-slate-400">3 steps to your personalized interview session.</p>
-      </div>
 
-      {/* Step 1: Resume */}
-      <div className="glass p-6 mb-5">
-        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-300 text-sm flex items-center justify-center font-bold">1</span>
-          Upload Resume
-        </h2>
+        <h1 className="nf-heading" style={{ fontSize: "2.2rem", marginBottom: "0.4rem" }}>
+          Configure Your <span className="nf-gradient-text">Neural Interview</span>
+        </h1>
+        <p className="nf-mono" style={{ fontSize: "0.78rem", color: "var(--nf-text-3)", marginBottom: "2.5rem" }}>
+          // Complete all 3 steps to initialize the interview engine
+        </p>
 
-        {parsedData ? (
-          <div className="flex items-start gap-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-            <FileText className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
-            <div>
-              <p className="font-semibold text-emerald-300">Resume Parsed ✓</p>
-              <p className="text-sm text-slate-400 mt-1">
-                Skills: {parsedData.skills.slice(0, 5).join(", ")}
-                {parsedData.skills.length > 5 && " ..."}
-              </p>
-              <p className="text-sm text-slate-400">Level: {parsedData.experience_level} · {parsedData.years_of_experience} yr(s) experience</p>
-              <button onClick={() => useResumeStore.getState().clear()} className="text-xs text-indigo-400 mt-2 underline-offset-2 underline">
-                Upload different resume
-              </button>
+        {/* ── Step 1: Resume ─────────────────────── */}
+        <div className="nf-card p-6 mb-5" style={stepDone(1) ? { borderColor: "rgba(0,255,136,0.3)", boxShadow: "var(--glow-green)" } : {}}>
+          <div className="flex items-center gap-3 mb-5">
+            <span className={`nf-badge ${stepDone(1) ? "nf-badge-green" : "nf-badge-cyan"} nf-mono`}
+              style={{ fontWeight: 700 }}>
+              {stepDone(1) ? "✓" : "01"}
+            </span>
+            <h2 className="nf-heading" style={{ fontSize: "1rem" }}>Upload Resume</h2>
+          </div>
+
+          {parsedData ? (
+            <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: "rgba(0,255,136,0.05)", border: "1px solid rgba(0,255,136,0.2)" }}>
+              <FileText className="w-5 h-5 shrink-0 mt-0.5" style={{ color: "var(--nf-green)" }} />
+              <div className="flex-1">
+                <p className="nf-heading" style={{ fontSize: "0.9rem", color: "var(--nf-green)" }}>
+                  <CheckCircle className="w-3.5 h-3.5 inline mr-1.5" />Resume Indexed
+                </p>
+                <p className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-2)", marginTop: "0.35rem" }}>
+                  skills[{parsedData.skills.length}] = [{parsedData.skills.slice(0, 4).join(", ")}{parsedData.skills.length > 4 ? ", ..." : ""}]
+                </p>
+                <p className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>
+                  level: {parsedData.experience_level} · yrs: {parsedData.years_of_experience}
+                </p>
+                <button onClick={clear} className="nf-mono" style={{ fontSize: "0.7rem", color: "var(--nf-cyan)", marginTop: "0.5rem", textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                  Upload different file
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div
-            {...getRootProps()}
-            className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all ${
-              isDragActive ? "border-indigo-400 bg-indigo-500/10" : "border-slate-700 hover:border-indigo-500/50 hover:bg-indigo-500/5"
-            }`}
-          >
-            <input {...getInputProps()} />
-            {isUploading ? (
-              <div className="flex flex-col items-center gap-3">
-                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
-                <p className="text-slate-400">Analyzing your resume with AI...</p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-3">
-                <Upload className="w-8 h-8 text-slate-500" />
-                <p className="text-slate-300 font-medium">Drop your resume here or click to browse</p>
-                <p className="text-slate-500 text-sm">PDF or DOCX · Max 5 MB</p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          ) : (
+            <div
+              {...getRootProps()}
+              style={{
+                border: `2px dashed ${isDragActive ? "var(--nf-cyan)" : "var(--nf-border)"}`,
+                borderRadius: 10,
+                padding: "3rem 2rem",
+                textAlign: "center",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                background: isDragActive ? "rgba(0,212,255,0.04)" : "transparent",
+              }}
+            >
+              <input {...getInputProps()} />
+              {isUploading ? (
+                <div className="flex flex-col items-center gap-3">
+                  <Loader2 className="w-8 h-8 animate-spin" style={{ color: "var(--nf-cyan)" }} />
+                  <p className="nf-mono" style={{ fontSize: "0.8rem", color: "var(--nf-cyan)" }}>
+                    // Parsing resume with AI...
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.15)" }}>
+                    <Upload className="w-6 h-6" style={{ color: "var(--nf-text-3)" }} />
+                  </div>
+                  <div>
+                    <p className="nf-heading" style={{ fontSize: "0.95rem", marginBottom: "0.25rem" }}>
+                      Drop resume here or click to browse
+                    </p>
+                    <p className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>PDF · DOCX · Max 5 MB</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
-      {/* Step 2: Company */}
-      <div className="glass p-6 mb-5">
-        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-300 text-sm flex items-center justify-center font-bold">2</span>
-          Select Company & Role
-        </h2>
+        {/* ── Step 2: Company + Role ─────────────── */}
+        <div className="nf-card p-6 mb-5" style={stepDone(2) ? { borderColor: "rgba(0,255,136,0.3)", boxShadow: "var(--glow-green)" } : {}}>
+          <div className="flex items-center gap-3 mb-5">
+            <span className={`nf-badge ${stepDone(2) ? "nf-badge-green" : "nf-badge-violet"} nf-mono`} style={{ fontWeight: 700 }}>
+              {stepDone(2) ? "✓" : "02"}
+            </span>
+            <h2 className="nf-heading" style={{ fontSize: "1rem" }}>Target Company & Role</h2>
+          </div>
 
-        <div className="space-y-4">
           <div>
-            <label className="text-sm text-slate-400 mb-2 flex items-center gap-1.5"><Building2 className="w-4 h-4" />Target Company</label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-1.5 mb-3">
+              <Building2 className="w-3.5 h-3.5" style={{ color: "var(--nf-violet)" }} />
+              <span className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>// select company</span>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-5">
               {COMPANIES.map((c) => (
                 <button
                   key={c}
                   onClick={() => setSelectedCompany(c)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    selectedCompany === c
-                      ? "bg-indigo-500 text-white"
-                      : "glass text-slate-300 hover:border-indigo-500/50"
-                  }`}
+                  className={`nf-tag ${selectedCompany === c ? "active" : ""}`}
                 >
+                  {selectedCompany === c && <span className="nf-dot nf-dot-cyan" style={{ width: 5, height: 5 }} />}
                   {c}
                 </button>
               ))}
             </div>
-          </div>
 
-          <div>
-            <label className="text-sm text-slate-400 mb-2 flex items-center gap-1.5"><Briefcase className="w-4 h-4" />Job Role</label>
+            <div className="flex items-center gap-1.5 mb-3">
+              <Briefcase className="w-3.5 h-3.5" style={{ color: "var(--nf-violet)" }} />
+              <span className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>// select role</span>
+            </div>
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="w-full glass px-4 py-3 rounded-xl text-white bg-transparent border border-slate-700 focus:border-indigo-500 outline-none"
+              className="nf-input nf-select nf-mono"
+              style={{ fontSize: "0.85rem" }}
             >
-              <option value="" style={{ background: "#1e293b" }}>Select a role...</option>
+              <option value="" style={{ background: "var(--nf-abyss)" }}>— select role —</option>
               {ROLES.map((r) => (
-                <option key={r} value={r} style={{ background: "#1e293b" }}>{r}</option>
+                <option key={r} value={r} style={{ background: "var(--nf-abyss)" }}>{r}</option>
               ))}
             </select>
           </div>
         </div>
-      </div>
 
-      {/* Step 3: JD + voice */}
-      <div className="glass p-6 mb-8">
-        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <span className="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-300 text-sm flex items-center justify-center font-bold">3</span>
-          Paste Job Description (optional)
-        </h2>
-        <textarea
-          value={jobDescription}
-          onChange={(e) => setJobDescription(e.target.value)}
-          placeholder="Paste the job description here to further personalize your interview..."
-          rows={5}
-          className="w-full glass px-4 py-3 rounded-xl text-slate-200 bg-transparent border border-slate-700 focus:border-indigo-500 outline-none resize-none text-sm"
-        />
+        {/* ── Step 3: JD + voice ────────────────── */}
+        <div className="nf-card p-6 mb-8">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="nf-badge nf-badge-amber nf-mono" style={{ fontWeight: 700 }}>03</span>
+            <h2 className="nf-heading" style={{ fontSize: "1rem" }}>Job Description + Options</h2>
+            <span className="nf-badge" style={{ fontSize: "0.62rem", marginLeft: "auto", background: "rgba(255,171,0,0.08)", color: "var(--nf-amber)", border: "1px solid rgba(255,171,0,0.2)" }}>OPTIONAL</span>
+          </div>
 
-        <div className="mt-4 flex items-center gap-3">
-          <button
-            onClick={() => setVoiceMode(!voiceMode)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              voiceMode ? "bg-indigo-500 text-white" : "glass text-slate-300"
-            }`}
-          >
-            <Mic className="w-4 h-4" /> Voice Mode {voiceMode ? "ON" : "OFF"}
-          </button>
-          <span className="text-slate-500 text-xs">Speak your answers — transcribed by Whisper AI</span>
+          <span className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)", display: "block", marginBottom: "0.5rem" }}>
+            // paste job description for deeper personalization
+          </span>
+          <textarea
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
+            placeholder="// Paste job description here..."
+            rows={4}
+            className="nf-input nf-textarea"
+          />
+
+          {/* Voice toggle */}
+          <div className="flex items-center gap-3 mt-4">
+            <button
+              onClick={() => setVoiceMode(!voiceMode)}
+              className={`nf-toggle ${voiceMode ? "on" : ""}`}
+              role="switch"
+              aria-checked={voiceMode}
+            />
+            <div>
+              <div className="flex items-center gap-1.5">
+                <Mic className="w-3.5 h-3.5" style={{ color: voiceMode ? "var(--nf-cyan)" : "var(--nf-text-3)" }} />
+                <span className="nf-mono" style={{ fontSize: "0.78rem", color: voiceMode ? "var(--nf-cyan)" : "var(--nf-text-2)" }}>
+                  voice_mode = {voiceMode ? "true" : "false"}
+                </span>
+              </div>
+              <p className="nf-mono" style={{ fontSize: "0.68rem", color: "var(--nf-text-3)", marginTop: "0.15rem" }}>
+                Speak answers — transcribed by Whisper AI
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Start Button */}
-      <button
-        onClick={handleStart}
-        disabled={!canStart || isStarting}
-        className={`btn-primary w-full justify-center text-lg py-4 ${!canStart ? "opacity-40 cursor-not-allowed" : ""}`}
-      >
-        {isStarting ? (
-          <><Loader2 className="w-5 h-5 animate-spin" /> Creating your interview plan...</>
-        ) : (
-          <><Brain className="w-5 h-5" /> Start Interview <ArrowRight className="w-5 h-5" /></>
+        {/* ── Launch Button ──────────────────────── */}
+        <button
+          onClick={handleStart}
+          disabled={!canStart || isStarting}
+          className="nf-btn nf-btn-primary w-full"
+          style={{ justifyContent: "center", fontSize: "0.95rem", padding: "1rem 2rem" }}
+        >
+          {isStarting ? (
+            <><Loader2 className="w-5 h-5 animate-spin" /> Initializing neural session...</>
+          ) : (
+            <><Terminal className="w-5 h-5" /> Launch Interview Engine <ArrowRight className="w-5 h-5" /></>
+          )}
+        </button>
+
+        {!canStart && (
+          <p className="nf-mono text-center mt-3" style={{ fontSize: "0.7rem", color: "var(--nf-text-3)" }}>
+            // Complete steps 01 + 02 to unlock launch
+          </p>
         )}
-      </button>
+      </div>
     </div>
   );
 }

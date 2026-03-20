@@ -1,40 +1,49 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Inter } from "next/font/google";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "HireMind AI — AI Mock Interviews Powered by Your Resume",
+  title: "HireMind AI — Neural Interview Engine",
   description:
-    "Practice real interviews personalized to your resume, job description, and target company. Adaptive AI questioning that thinks like Google, Amazon, and Microsoft interviewers.",
-  keywords: ["mock interview", "AI interview", "technical interview prep", "resume-based interview", "FAANG prep"],
+    "An intelligent AI interview simulator that adapts to your resume, target company, and role. Train like a FAANG candidate. Hire-level feedback on every answer.",
+  keywords: ["AI interview", "mock interview", "FAANG prep", "resume-aware", "technical interview"],
   openGraph: {
-    title: "HireMind AI",
-    description: "AI-powered mock interviews that adapt to your resume and target company.",
+    title: "HireMind AI — Neural Interview Engine",
+    description: "AI mock interviews personalized to your resume and target company.",
     type: "website",
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} font-sans antialiased bg-gray-950 text-white`}>
+        <body className={`${outfit.variable} ${jetbrainsMono.variable}`}>
           {children}
           <Toaster
             position="top-right"
             toastOptions={{
               style: {
-                background: "#1e293b",
-                border: "1px solid rgba(99,102,241,0.3)",
-                color: "#f8fafc",
+                background: "rgba(6,13,26,0.95)",
+                border: "1px solid rgba(0,212,255,0.25)",
+                color: "#e8f4ff",
+                borderRadius: "8px",
+                fontFamily: "JetBrains Mono, monospace",
+                fontSize: "0.82rem",
               },
             }}
           />
