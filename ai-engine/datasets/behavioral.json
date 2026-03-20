@@ -1,0 +1,129 @@
+[
+  {
+    "question": "Tell me about a time you handled a significant technical conflict with a teammate.",
+    "companies": ["Amazon", "Google", "Microsoft"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Clarity of situation",
+      "Actions taken to resolve (ownership)",
+      "Impact on team/product",
+      "Empathy demonstrated"
+    ],
+    "amazon_lp": ["Disagree and Commit", "Earn Trust"],
+    "tags": ["conflict", "teamwork", "ownership"]
+  },
+  {
+    "question": "Describe a time when you had to learn a new technology quickly to complete a project.",
+    "companies": ["Amazon", "Google", "Meta", "Microsoft"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Learning velocity and approach",
+      "Self-direction without hand-holding",
+      "Practical application",
+      "Outcome and reflection"
+    ],
+    "amazon_lp": ["Learn and Be Curious", "Deliver Results"],
+    "tags": ["learning", "adaptability", "growth"]
+  },
+  {
+    "question": "Give an example of a time you had to make a difficult decision without enough data.",
+    "companies": ["Amazon", "Google"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Decision-making process under uncertainty",
+      "Risk assessment",
+      "How they gathered partial data",
+      "Ownership of the outcome"
+    ],
+    "amazon_lp": ["Bias for Action", "Are Right, A Lot"],
+    "tags": ["decision-making", "ambiguity", "leadership"]
+  },
+  {
+    "question": "Tell me about a time you built something from scratch with no guidance.",
+    "companies": ["Meta", "Startups", "Google"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Scope definition",
+      "Initiative and resourcefulness",
+      "Technical quality of what was built",
+      "Documentation and handoff"
+    ],
+    "tags": ["initiative", "ownership", "entrepreneurship"]
+  },
+  {
+    "question": "Describe a time when you had to push back on a product requirement.",
+    "companies": ["Amazon", "Google", "Microsoft"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Technical vs product trade-off reasoning",
+      "Communication with non-technical stakeholders",
+      "Data or evidence used",
+      "Final outcome"
+    ],
+    "amazon_lp": ["Have Backbone; Disagree and Commit"],
+    "tags": ["communication", "leadership", "advocacy"]
+  },
+  {
+    "question": "Tell me about a time you improved a process or system significantly.",
+    "companies": ["Amazon", "Google", "Microsoft"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Problem identification (was it proactive?)",
+      "Solution design and impact",
+      "Measurable improvement metrics",
+      "Adoption by others"
+    ],
+    "amazon_lp": ["Invent and Simplify", "Deliver Results"],
+    "tags": ["process improvement", "proactivity", "systems thinking"]
+  },
+  {
+    "question": "Give an example of a time you received critical feedback. How did you respond?",
+    "companies": ["Amazon", "Google", "Meta", "Microsoft"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Emotional maturity",
+      "Actionable response",
+      "Growth demonstrated",
+      "Openness to feedback"
+    ],
+    "amazon_lp": ["Earn Trust", "Learn and Be Curious"],
+    "tags": ["feedback", "growth mindset", "self-awareness"]
+  },
+  {
+    "question": "Tell me about a time you mentored or helped a junior teammate grow.",
+    "companies": ["Google", "Amazon", "Microsoft"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Teaching approach",
+      "Patience and empathy",
+      "Outcome for the mentee",
+      "Team impact"
+    ],
+    "tags": ["mentorship", "leadership", "collaboration"]
+  },
+  {
+    "question": "Describe a project you're most proud of and why.",
+    "companies": ["Amazon", "Google", "Meta", "Microsoft", "Apple"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Technical depth",
+      "Personal contribution vs team",
+      "Real-world impact",
+      "Lessons learned"
+    ],
+    "tags": ["pride", "technical", "impact", "storytelling"]
+  },
+  {
+    "question": "Tell me about a time you had to manage competing priorities and a tight deadline.",
+    "companies": ["Amazon", "Meta", "Google"],
+    "framework": "STAR",
+    "evaluation_points": [
+      "Prioritization framework",
+      "Stakeholder communication",
+      "Delivery under pressure",
+      "Trade-offs made"
+    ],
+    "amazon_lp": ["Deliver Results", "Bias for Action"],
+    "tags": ["time management", "prioritization", "delivery"]
+  }
+]

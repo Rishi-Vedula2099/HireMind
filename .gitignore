@@ -1,39 +1,162 @@
-# dependencies
-/node_modules
-/.pnp
+# ============================================================
+# HireMind — .gitignore (Full Stack: Next.js + FastAPI + AI)
+# ============================================================
+
+# ─── Dependencies ────────────────────────────────────────────
+node_modules/
+.pnp
 .pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# testing
-/coverage
+# ─── Next.js Build Output ────────────────────────────────────
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/
 
-# next.js
-/.next/
-/out/
+# Source maps (build artifacts — never commit)
+**/*.map
+**/*.js.map
+**/*.css.map
 
-# production
-/build
+# Next.js cache
+frontend/.next/cache/
 
-# misc
-.DS_Store
-*.pem
+# ─── Python / FastAPI ────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+backend/.venv/
+ai-engine/.venv/
 
-# local env files
-.env*.local
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+*.whl
+*.dist-info/
 
-# vercel
-.vercel
+# MyPy / type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
 
-# typescript
+# Pytest
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# ─── Environment & Secrets ───────────────────────────────────
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# ─── TypeScript ──────────────────────────────────────────────
 *.tsbuildinfo
 next-env.d.ts
 
-# ide
+# ─── Logs ────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+celery*.log
+worker*.log
+
+# ─── Docker ──────────────────────────────────────────────────
+docker/volumes/
+.docker/
+
+# ─── Redis ───────────────────────────────────────────────────
+dump.rdb
+*.rdb
+appendonly.aof
+
+# ─── Database ────────────────────────────────────────────────
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+postgres-data/
+
+# ─── AI Engine / ML ──────────────────────────────────────────
+# FAISS index files
+*.faiss
+*.index
+ai-engine/embeddings/index/
+ai-engine/embeddings/*.pkl
+
+# Model weights & checkpoints (large binary blobs)
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.h5
+*.onnx
+*.pkl
+
+# Whisper downloads
+ai-engine/models/
+
+# ─── Uploads / User Data ─────────────────────────────────────
+backend/uploads/
+frontend/public/uploads/
+
+# ─── Testing & Coverage ──────────────────────────────────────
+coverage/
+lcov.info
+*.lcov
+test-results/
+playwright-report/
+
+# ─── OS Specific ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─── IDE ─────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ─── Misc ────────────────────────────────────────────────────
+*.pem
+.vercel
+.turbo/
+.cache/
+tmp/
+temp/

@@ -1,0 +1,242 @@
+[
+  {
+    "question": "Find the longest substring without repeating characters.",
+    "topic": "Sliding Window",
+    "difficulty": "medium",
+    "companies": ["Google", "Amazon", "Facebook"],
+    "role": ["SDE", "Backend", "Full Stack"],
+    "hints": [
+      "Use a hash map to track character positions",
+      "Maintain a window with two pointers (left, right)"
+    ],
+    "expected_concepts": ["HashMap", "Sliding Window", "Two Pointers"],
+    "follow_ups": [
+      "What is the time complexity?",
+      "Can you optimize space to O(1) for ASCII characters?"
+    ]
+  },
+  {
+    "question": "Given an array of integers, return indices of two numbers that add up to a target.",
+    "topic": "HashMap",
+    "difficulty": "easy",
+    "companies": ["Amazon", "Microsoft", "Apple"],
+    "role": ["SDE", "Backend", "Full Stack", "Frontend"],
+    "hints": [
+      "Use a hash map to store complement values",
+      "One-pass solution is possible"
+    ],
+    "expected_concepts": ["HashMap", "Complement lookup"],
+    "follow_ups": [
+      "What if the array is sorted?",
+      "Handle duplicate pairs in the result"
+    ]
+  },
+  {
+    "question": "Given a linked list, detect if it contains a cycle.",
+    "topic": "LinkedList",
+    "difficulty": "easy",
+    "companies": ["Amazon", "Google"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Floyd's tortoise and hare algorithm",
+      "Fast pointer moves 2 steps, slow moves 1 step"
+    ],
+    "expected_concepts": ["Two Pointers", "Floyd's Cycle Detection"],
+    "follow_ups": [
+      "Where does the cycle start?",
+      "What is the space complexity?"
+    ]
+  },
+  {
+    "question": "Implement a binary search on a rotated sorted array.",
+    "topic": "Binary Search",
+    "difficulty": "medium",
+    "companies": ["Google", "Microsoft", "Meta"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Determine which half is sorted at each step",
+      "Check if target is in the sorted half"
+    ],
+    "expected_concepts": ["Binary Search", "Sorted Array", "Edge Cases"],
+    "follow_ups": [
+      "Handle duplicates in the array",
+      "What if k is unknown?"
+    ]
+  },
+  {
+    "question": "Given a matrix, perform spiral order traversal.",
+    "topic": "Matrix",
+    "difficulty": "medium",
+    "companies": ["Amazon", "Google"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Maintain 4 boundaries: top, bottom, left, right",
+      "Shrink boundaries after traversing each edge"
+    ],
+    "expected_concepts": ["Matrix Traversal", "Boundary Management"],
+    "follow_ups": [
+      "Can you do it in-place?",
+      "Rotate the matrix 90 degrees instead"
+    ]
+  },
+  {
+    "question": "Find all permutations of a string.",
+    "topic": "Backtracking",
+    "difficulty": "medium",
+    "companies": ["Google", "Meta"],
+    "role": ["SDE"],
+    "hints": [
+      "Use backtracking with a visited/used array",
+      "Swap characters in place"
+    ],
+    "expected_concepts": ["Backtracking", "Recursion", "DFS"],
+    "follow_ups": [
+      "Handle duplicate characters",
+      "Iterative approach?"
+    ]
+  },
+  {
+    "question": "Implement LRU Cache with O(1) get and put operations.",
+    "topic": "Design + Data Structures",
+    "difficulty": "hard",
+    "companies": ["Google", "Amazon", "Microsoft", "Meta"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Combine HashMap + Doubly Linked List",
+      "HashMap provides O(1) lookup; DLL provides O(1) eviction"
+    ],
+    "expected_concepts": ["HashMap", "Doubly Linked List", "LRU Eviction Policy"],
+    "follow_ups": [
+      "Thread-safe version?",
+      "LFU cache instead?"
+    ]
+  },
+  {
+    "question": "Find the kth largest element in an unsorted array without sorting.",
+    "topic": "Heap",
+    "difficulty": "medium",
+    "companies": ["Amazon", "Google", "Microsoft"],
+    "role": ["SDE", "Backend", "Data Engineer"],
+    "hints": [
+      "Use a min-heap of size k",
+      "QuickSelect has O(n) average time"
+    ],
+    "expected_concepts": ["Min-Heap", "QuickSelect", "Partition"],
+    "follow_ups": [
+      "What if the array is streamed?",
+      "Top k frequent elements variant"
+    ]
+  },
+  {
+    "question": "Given a binary tree, serialize and deserialize it.",
+    "topic": "Tree",
+    "difficulty": "hard",
+    "companies": ["Facebook", "Google", "LinkedIn"],
+    "role": ["SDE"],
+    "hints": [
+      "Use preorder traversal with null markers",
+      "Use a queue for BFS-based serialization"
+    ],
+    "expected_concepts": ["BFS", "DFS", "Tree Traversal", "String Parsing"],
+    "follow_ups": [
+      "Space complexity comparison between BFS and DFS approaches?",
+      "Handle very deep trees"
+    ]
+  },
+  {
+    "question": "Find the number of islands in a 2D grid (1s and 0s).",
+    "topic": "Graph / DFS",
+    "difficulty": "medium",
+    "companies": ["Amazon", "Google", "Microsoft"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "DFS/BFS from each unvisited '1'",
+      "Mark visited cells to avoid revisiting"
+    ],
+    "expected_concepts": ["DFS", "BFS", "Grid Traversal", "Connected Components"],
+    "follow_ups": [
+      "Max island size?",
+      "Handle diagonal connections"
+    ]
+  },
+  {
+    "question": "Merge k sorted linked lists.",
+    "topic": "Heap / Divide and Conquer",
+    "difficulty": "hard",
+    "companies": ["Google", "Amazon"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Use a min-heap across all list heads",
+      "Divide and conquer: merge pairs iteratively"
+    ],
+    "expected_concepts": ["Min-Heap", "Divide and Conquer", "Linked List"],
+    "follow_ups": [
+      "What is full time complexity?",
+      "What if k is very large?"
+    ]
+  },
+  {
+    "question": "Given n coins of different values, find minimum coins to make amount S.",
+    "topic": "Dynamic Programming",
+    "difficulty": "medium",
+    "companies": ["Amazon", "Google", "Apple"],
+    "role": ["SDE"],
+    "hints": [
+      "dp[i] = min coins to make amount i",
+      "For each coin, update dp[i] = min(dp[i], dp[i-coin] + 1)"
+    ],
+    "expected_concepts": ["Dynamic Programming", "Bottom-Up DP", "Optimal Substructure"],
+    "follow_ups": [
+      "Count number of ways instead",
+      "Unbounded knapsack variant"
+    ]
+  },
+  {
+    "question": "Implement a trie (prefix tree) with insert, search, and startsWith.",
+    "topic": "Trie",
+    "difficulty": "medium",
+    "companies": ["Google", "Amazon", "Meta"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Each node has an array or HashMap of children",
+      "Mark end-of-word flag"
+    ],
+    "expected_concepts": ["Trie", "Hash Map", "Tree"],
+    "follow_ups": [
+      "Delete from a trie",
+      "Auto-complete with top-k suggestions"
+    ]
+  },
+  {
+    "question": "Find the maximum profit from stock prices (single buy/sell).",
+    "topic": "Arrays / Greedy",
+    "difficulty": "easy",
+    "companies": ["Amazon", "Google", "Apple", "Microsoft"],
+    "role": ["SDE", "Backend", "Full Stack", "Frontend"],
+    "hints": [
+      "Track minimum price seen so far",
+      "At each step: profit = price - min_so_far"
+    ],
+    "expected_concepts": ["Greedy", "Linear Scan", "Min Tracking"],
+    "follow_ups": [
+      "Multiple transactions variant",
+      "With cooldown period"
+    ]
+  },
+  {
+    "question": "Design a stack that supports push, pop, top, and getMin in O(1).",
+    "topic": "Stack",
+    "difficulty": "medium",
+    "companies": ["Google", "Amazon", "Microsoft"],
+    "role": ["SDE", "Backend"],
+    "hints": [
+      "Use an auxiliary min-stack",
+      "Push min value alongside actual value"
+    ],
+    "expected_concepts": ["Stack", "Auxiliary Data Structure", "O(1) Min Retrieval"],
+    "follow_ups": [
+      "What about getMax?",
+      "Implement without extra space"
+    ]
+  }
+]

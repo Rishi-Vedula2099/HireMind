@@ -1,0 +1,165 @@
+[
+  {
+    "question": "Design a URL shortener like bit.ly.",
+    "difficulty": "medium",
+    "companies": ["Amazon", "Microsoft", "Google"],
+    "roles": ["SDE", "Backend"],
+    "concepts": ["Database design", "Hashing", "Caching", "Scaling"],
+    "expected_points": [
+      "Base62 encoding for short codes",
+      "Hash collision handling",
+      "Bloom filter to avoid DB lookup for non-existent URLs",
+      "Read-heavy — use Redis caching",
+      "Horizontal scaling for redirect service",
+      "Analytics tracking asynchronously (Kafka)"
+    ],
+    "follow_ups": [
+      "How do you handle 1 billion URLs?",
+      "How do you prevent abuse (spam URLs)?",
+      "99.99% uptime SLA — what changes?"
+    ]
+  },
+  {
+    "question": "Design a rate limiter for an API gateway (e.g., 100 requests/minute per user).",
+    "difficulty": "medium",
+    "companies": ["Amazon", "Google", "Stripe"],
+    "roles": ["Backend", "SDE"],
+    "concepts": ["Distributed systems", "Redis", "Sliding Window", "Token Bucket"],
+    "expected_points": [
+      "Token bucket vs sliding window counter algorithms",
+      "Redis with atomic Lua scripts for distributed rate limiting",
+      "Per-user vs per-IP granularity",
+      "Graceful degradation — return 429 with Retry-After header",
+      "Cluster-aware consistency"
+    ],
+    "follow_ups": [
+      "How does this work across 100 API servers?",
+      "What if Redis goes down?",
+      "Implement for different tiers (free/pro)"
+    ]
+  },
+  {
+    "question": "Design a real-time chat system like WhatsApp.",
+    "difficulty": "hard",
+    "companies": ["Meta", "Google", "Microsoft"],
+    "roles": ["SDE", "Backend"],
+    "concepts": ["WebSockets", "Message queues", "Presence system", "Fan-out"],
+    "expected_points": [
+      "WebSocket persistent connections per user",
+      "Message broker (Kafka/RabbitMQ) for delivery guarantees",
+      "Group message fan-out strategy",
+      "Presence service with heartbeats",
+      "Message persistence in Cassandra (append-only)",
+      "Push notifications (FCM/APNs) for offline users",
+      "End-to-end encryption"
+    ],
+    "follow_ups": [
+      "How do you scale to 1 billion users?",
+      "Message ordering guarantees?",
+      "Handle network partitions"
+    ]
+  },
+  {
+    "question": "Design Netflix's video streaming platform.",
+    "difficulty": "hard",
+    "companies": ["Amazon", "Netflix", "Google"],
+    "roles": ["SDE", "Backend", "Data Engineer"],
+    "concepts": ["CDN", "Video encoding", "Storage", "Adaptive bitrate"],
+    "expected_points": [
+      "Adaptive Bitrate Streaming (ABR) — HLS/DASH",
+      "CDN edge caching for popular content",
+      "Chunked video storage in S3",
+      "Encoding pipeline (multiple quality levels, AWS Elastic Transcoder)",
+      "Recommendation engine (collaborative filtering)",
+      "Global load balancing with GeoDNS",
+      "Fault tolerance — failover to backup CDN"
+    ],
+    "follow_ups": [
+      "How does Netflix handle new video uploads?",
+      "50% of all internet traffic — how?",
+      "Cold start problem for recommendations"
+    ]
+  },
+  {
+    "question": "Design Google's search autocomplete feature.",
+    "difficulty": "medium",
+    "companies": ["Google", "Amazon"],
+    "roles": ["SDE", "Backend"],
+    "concepts": ["Trie", "Prefix matching", "Caching", "Ranking"],
+    "expected_points": [
+      "Distributed trie for prefix matching",
+      "Aggregated search frequency for ranking",
+      "Redis cache for top-k suggestions per prefix",
+      "Data aggregation pipeline (Hadoop/Spark)",
+      "Personalization layer on top",
+      "<100ms P99 latency requirement"
+    ],
+    "follow_ups": [
+      "Handle 100,000 queries per second?",
+      "Filter inappropriate suggestions?",
+      "Localization per country/language"
+    ]
+  },
+  {
+    "question": "Design a distributed task scheduler (like Airflow/cron).",
+    "difficulty": "hard",
+    "companies": ["Amazon", "Uber", "LinkedIn"],
+    "roles": ["Backend", "SDE", "Data Engineer"],
+    "concepts": ["Distributed systems", "Leader election", "Message queues", "Idempotency"],
+    "expected_points": [
+      "Distributed lock for preventing duplicate execution (Redis/ZooKeeper)",
+      "Leader election for scheduler node",
+      "Priority queue for task ordering",
+      "At-least-once vs exactly-once delivery semantics",
+      "Worker pool with horizontal scaling",
+      "Dead-letter queue for failed tasks",
+      "Monitoring and alerting"
+    ],
+    "follow_ups": [
+      "Handle tasks that must run exactly once?",
+      "Cross-timezone scheduling?",
+      "Task dependency graphs (DAGs)"
+    ]
+  },
+  {
+    "question": "Design Instagram's photo feed (newsfeed).",
+    "difficulty": "hard",
+    "companies": ["Meta", "Twitter"],
+    "roles": ["SDE", "Backend"],
+    "concepts": ["Fan-out", "Caching", "Ranking", "Celebrity problem"],
+    "expected_points": [
+      "Fan-out on write vs fan-out on read trade-offs",
+      "Celebrity/influencer problem — push for regular, pull for massive followings",
+      "Redis Sorted Set for timeline cache",
+      "ML ranking layer for relevance",
+      "Sharding by user_id",
+      "CDN for photo delivery"
+    ],
+    "follow_ups": [
+      "Handle accounts with 100M followers?",
+      "Stories vs posts — different fan-out?",
+      "Real-time vs eventual consistency trade-off"
+    ]
+  },
+  {
+    "question": "Design a key-value store like Redis.",
+    "difficulty": "hard",
+    "companies": ["Google", "Amazon", "Microsoft"],
+    "roles": ["Backend", "SDE"],
+    "concepts": ["Distributed hash table", "Replication", "Consistency", "Sharding"],
+    "expected_points": [
+      "Consistent hashing for sharding",
+      "Replication factor for fault tolerance",
+      "Write-ahead log (WAL) for durability",
+      "LRU eviction policy",
+      "Leader-follower replication with async/sync modes",
+      "Vector clocks or CRDT for eventual consistency",
+      "Gossip protocol for cluster membership"
+    ],
+    "follow_ups": [
+      "CAP theorem trade-offs for your design?",
+      "Handle network partition?",
+      "Persistence modes — RDB vs AOF"
+    ]
+  }
+]

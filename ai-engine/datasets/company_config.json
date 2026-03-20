@@ -1,0 +1,107 @@
+{
+  "Google": {
+    "style_description": "Rigorous algorithmic focus. Clean, optimal code. Strong emphasis on time/space complexity and edge cases. System design at senior levels.",
+    "focus": ["DSA", "System Design"],
+    "difficulty_default": "hard",
+    "behavioral_weight": "low",
+    "dsa_weight": "high",
+    "rounds_template": [
+      {"round": "DSA", "difficulty": "medium", "num_questions": 2},
+      {"round": "DSA", "difficulty": "hard", "num_questions": 2},
+      {"round": "System Design", "difficulty": "hard", "num_questions": 1},
+      {"round": "Behavioral", "difficulty": "medium", "num_questions": 1}
+    ],
+    "interviewer_tone": "analytical, precise, expects you to walk through your thought process",
+    "red_flags": ["Not considering edge cases", "Jumping to code too fast", "Ignoring time/space complexity"]
+  },
+  "Amazon": {
+    "style_description": "Leadership Principles are core to every round. Behavioral questions dominate. DSA is medium difficulty. Bar raiser round is unexpectedly tough.",
+    "focus": ["Behavioral", "DSA", "System Design"],
+    "difficulty_default": "medium",
+    "behavioral_weight": "high",
+    "dsa_weight": "medium",
+    "rounds_template": [
+      {"round": "Behavioral", "difficulty": "medium", "num_questions": 3},
+      {"round": "DSA", "difficulty": "medium", "num_questions": 2},
+      {"round": "System Design", "difficulty": "medium", "num_questions": 1}
+    ],
+    "interviewer_tone": "friendly but structured, expects STAR answers with clear impact metrics",
+    "leadership_principles": [
+      "Customer Obsession", "Ownership", "Invent and Simplify", "Are Right, A Lot",
+      "Learn and Be Curious", "Hire and Develop the Best", "Insist on the Highest Standards",
+      "Think Big", "Bias for Action", "Frugality", "Earn Trust",
+      "Dive Deep", "Have Backbone; Disagree and Commit", "Deliver Results", "Strive to be Earth's Best Employer"
+    ],
+    "red_flags": ["Vague answers without specifics", "Not using STAR", "Inability to quantify impact"]
+  },
+  "Microsoft": {
+    "style_description": "Growth mindset culture. Balanced interview — DSA plus behavioral. Focus on collaboration and learning. System design at senior levels only.",
+    "focus": ["DSA", "Behavioral", "System Design"],
+    "difficulty_default": "medium",
+    "behavioral_weight": "medium",
+    "dsa_weight": "medium",
+    "rounds_template": [
+      {"round": "DSA", "difficulty": "medium", "num_questions": 2},
+      {"round": "Behavioral", "difficulty": "medium", "num_questions": 2},
+      {"round": "System Design", "difficulty": "medium", "num_questions": 1}
+    ],
+    "interviewer_tone": "supportive, collaborative, encourages thinking aloud",
+    "red_flags": ["Fixed mindset", "Can't collaborate in code review discussion", "No curiosity shown"]
+  },
+  "Meta": {
+    "style_description": "Speed and scale. DSA questions are medium-hard with emphasis on optimal solutions. Large-scale system design around social products. Two coding rounds.",
+    "focus": ["DSA", "System Design"],
+    "difficulty_default": "hard",
+    "behavioral_weight": "low",
+    "dsa_weight": "high",
+    "rounds_template": [
+      {"round": "DSA", "difficulty": "medium", "num_questions": 2},
+      {"round": "DSA", "difficulty": "hard", "num_questions": 2},
+      {"round": "System Design", "difficulty": "hard", "num_questions": 1},
+      {"round": "Behavioral", "difficulty": "medium", "num_questions": 1}
+    ],
+    "interviewer_tone": "fast-paced, data-driven, move quickly",
+    "red_flags": ["Overthinking simple problems", "No scalability discussion", "Not considering tradeoffs"]
+  },
+  "Apple": {
+    "style_description": "Craft and attention to detail. Deep technical rounds in the specialty area. Heavy domain-specific questions. Culture fit is very important.",
+    "focus": ["DSA", "Behavioral"],
+    "difficulty_default": "medium",
+    "behavioral_weight": "medium",
+    "dsa_weight": "medium",
+    "rounds_template": [
+      {"round": "DSA", "difficulty": "medium", "num_questions": 2},
+      {"round": "Behavioral", "difficulty": "medium", "num_questions": 3},
+      {"round": "System Design", "difficulty": "medium", "num_questions": 1}
+    ],
+    "interviewer_tone": "detail-oriented, asks why do it this way, values craftsmanship",
+    "red_flags": ["Sloppy code", "Dismissing user experience in technical decisions"]
+  },
+  "Startup": {
+    "style_description": "Practical and fast. Will you ship? Can you own entire features? Culture fit heavily weighted. Leetcode less important than real-world coding.",
+    "focus": ["Behavioral", "DSA"],
+    "difficulty_default": "easy",
+    "behavioral_weight": "high",
+    "dsa_weight": "low",
+    "rounds_template": [
+      {"round": "Behavioral", "difficulty": "easy", "num_questions": 2},
+      {"round": "DSA", "difficulty": "easy", "num_questions": 2},
+      {"round": "System Design", "difficulty": "medium", "num_questions": 1}
+    ],
+    "interviewer_tone": "casual, open-ended, wants to know your opinions and past work",
+    "red_flags": ["Over-engineering simple problems", "No ownership mindset", "Can't work independently"]
+  },
+  "default": {
+    "style_description": "Balanced technical interview covering algorithms, system thinking, and communication.",
+    "focus": ["DSA", "System Design", "Behavioral"],
+    "difficulty_default": "medium",
+    "behavioral_weight": "medium",
+    "dsa_weight": "medium",
+    "rounds_template": [
+      {"round": "DSA", "difficulty": "medium", "num_questions": 2},
+      {"round": "System Design", "difficulty": "medium", "num_questions": 1},
+      {"round": "Behavioral", "difficulty": "medium", "num_questions": 2}
+    ],
+    "interviewer_tone": "professional and balanced"
+  }
+}
