@@ -40,42 +40,42 @@ export default function DashboardPage() {
     : 0;
 
   const scoreColor = (s: number) =>
-    s >= 7 ? "var(--nf-green)" : s >= 5 ? "var(--nf-amber)" : "var(--nf-magenta)";
+    s >= 7 ? "var(--kz-moss)" : s >= 5 ? "var(--kz-gold)" : "var(--kz-coral)";
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--nf-void)" }}>
+    <div className="min-h-screen">
       {/* ── Header ───────────────────────────────────────── */}
-      <header className="nf-nav sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
+      <header className="nf-nav sticky top-0 z-40 px-8 py-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.25)" }}>
-            <Brain className="w-4 h-4" style={{ color: "var(--nf-cyan)" }} />
+          <div className="w-9 h-9 flex items-center justify-center bg-[var(--kz-straw)] border border-[var(--kz-ink)]">
+            <Brain className="w-5 h-5 text-[var(--kz-teal)]" />
           </div>
-          <span className="nf-heading" style={{ color: "var(--nf-cyan)" }}>HIREMIND<span style={{ color: "var(--nf-text-3)", fontSize: "0.8em" }}>.AI</span></span>
+          <span className="nf-heading text-lg tracking-tight text-[var(--kz-charcoal)]">
+            HIREMIND<span className="text-[var(--kz-text-2)] font-light text-base">.ZEN</span>
+          </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {userInfo && (
-            <span className="nf-badge nf-badge-cyan nf-mono">
-              <span className="nf-dot nf-dot-cyan" style={{ width: 6, height: 6 }} />
-              {userInfo.plan.toUpperCase()} · {userInfo.daily_interviews_used} today
+            <span className="nf-badge nf-badge-cyan nf-mono text-[10px]">
+              {userInfo.plan.toUpperCase()} · {userInfo.daily_interviews_used} TODAY
             </span>
           )}
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center nf-heading"
-            style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)", color: "var(--nf-cyan)", fontSize: "0.85rem" }}>
+          <div className="w-9 h-9 flex items-center justify-center nf-heading bg-[var(--kz-straw)] border border-[var(--kz-ink)] text-[var(--kz-teal)] text-sm">
             {user?.firstName?.[0] ?? "U"}
           </div>
         </div>
       </header>
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "2.5rem 1.5rem" }}>
+      <div className="max-w-5xl mx-auto px-6 py-16">
         {/* ── Welcome ─────────────────────────────────────── */}
-        <div className="flex items-start justify-between mb-10">
+        <div className="flex items-start justify-between mb-16">
           <div>
-            <h1 className="nf-heading" style={{ fontSize: "1.8rem", marginBottom: "0.3rem" }}>
-              Interface ready, <span className="nf-gradient-text">{user?.firstName ?? "Candidate"}</span>
+            <h1 className="nf-heading text-4xl mb-2">
+              Interface ready, <span className="nf-gradient-text italic">{user?.firstName ?? "Candidate"}</span>
             </h1>
-            <p className="nf-mono" style={{ fontSize: "0.78rem", color: "var(--nf-text-3)", letterSpacing: "0.05em" }}>
-              // Neural Interview Engine standing by
+            <p className="nf-mono text-[10px] uppercase tracking-[0.2em] text-[var(--kz-text-3)]">
+              // Zen Interview Engine standing by
             </p>
           </div>
           <Link href="/interview/setup" className="nf-btn nf-btn-primary">
@@ -84,19 +84,19 @@ export default function DashboardPage() {
         </div>
 
         {/* ── Stats Grid ─────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 nf-stagger">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16 nf-stagger">
           {[
-            { icon: <BarChart3 className="w-5 h-5" />, label: "AVG_SCORE", value: `${avgScore}/10`, color: "var(--nf-cyan)", badge: "nf-badge-cyan" },
-            { icon: <Target className="w-5 h-5" />,    label: "HIRE_RATE", value: `${hireRate}%`,  color: "var(--nf-green)", badge: "nf-badge-green" },
-            { icon: <Clock className="w-5 h-5" />,     label: "SESSIONS",  value: reports.length, color: "var(--nf-violet)", badge: "nf-badge-violet" },
+            { icon: <BarChart3 className="w-5 h-5" />, label: "AVG_SCORE", value: `${avgScore}/10`, color: "var(--kz-teal)", badge: "nf-badge-cyan" },
+            { icon: <Target className="w-5 h-5" />,    label: "HIRE_RATE", value: `${hireRate}%`,  color: "var(--kz-moss)", badge: "nf-badge-green" },
+            { icon: <Clock className="w-5 h-5" />,     label: "SESSIONS",  value: reports.length, color: "var(--kz-charcoal)", badge: "nf-badge-violet" },
           ].map((s) => (
-            <div key={s.label} className="nf-card p-6 flex items-center gap-4 nf-animate-up">
-              <div className={`nf-badge ${s.badge}`} style={{ padding: "0.5rem", borderRadius: 8 }}>
+            <div key={s.label} className="nf-card p-8 flex items-center gap-6 nf-animate-in">
+              <div className={`p-4 bg-[var(--kz-straw)] border border-[var(--kz-ink)] text-[var(--kz-teal)]`}>
                 {s.icon}
               </div>
               <div>
-                <p className="nf-mono" style={{ fontSize: "0.65rem", color: "var(--nf-text-3)", letterSpacing: "0.1em" }}>{s.label}</p>
-                <p className="nf-heading" style={{ fontSize: "1.8rem", color: s.color, textShadow: `0 0 20px ${s.color}60` }}>
+                <p className="nf-mono text-[10px] tracking-[0.2em] text-[var(--kz-text-3)] mb-1">{s.label}</p>
+                <p className="nf-heading text-3xl" style={{ color: s.color }}>
                   {s.value}
                 </p>
               </div>
@@ -105,65 +105,61 @@ export default function DashboardPage() {
         </div>
 
         {/* ── Session History ─────────────────────────────── */}
-        <div>
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2">
-              <span className="nf-badge nf-badge-cyan" style={{ fontSize: "0.65rem" }}>HISTORY</span>
-              <span className="nf-mono" style={{ fontSize: "0.75rem", color: "var(--nf-text-3)" }}>// interview_sessions[]</span>
+        <div className="nf-animate-in">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <span className="nf-badge nf-badge-cyan text-[10px]">HISTORY</span>
+              <span className="nf-mono text-[10px] tracking-[0.1em] text-[var(--kz-text-3)]">// interview_sessions[]</span>
             </div>
             {reports.length > 0 && (
-              <span className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>{reports.length} records</span>
+              <span className="nf-mono text-[10px] text-[var(--kz-text-3)]">{reports.length} records</span>
             )}
           </div>
 
           {loading ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => <div key={i} className="nf-skeleton" style={{ height: 72 }} />)}
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => <div key={i} className="nf-skeleton h-20" />)}
             </div>
           ) : reports.length === 0 ? (
-            <div className="nf-card p-16 text-center">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 nf-animate-float"
-                style={{ background: "rgba(0,212,255,0.05)", border: "1px solid rgba(0,212,255,0.15)" }}>
-                <Brain className="w-7 h-7" style={{ color: "rgba(0,212,255,0.4)" }} />
+            <div className="nf-card p-20 text-center border-[var(--kz-ink)]">
+              <div className="w-20 h-20 flex items-center justify-center mx-auto mb-6 bg-[var(--kz-straw)] border border-[var(--kz-ink)]">
+                <Brain className="w-10 h-10 text-[var(--kz-teal)] opacity-40" />
               </div>
-              <p className="nf-heading mb-1" style={{ fontSize: "1rem" }}>No sessions yet</p>
-              <p className="nf-mono mb-6" style={{ fontSize: "0.75rem", color: "var(--nf-text-3)" }}>// Begin your first neural interview session</p>
-              <Link href="/interview/setup" className="nf-btn nf-btn-primary text-sm inline-flex">
+              <p className="nf-heading text-xl mb-2">No sessions yet</p>
+              <p className="nf-mono text-xs text-[var(--kz-text-3)] mb-8 tracking-[0.1em]">// Begin your first zen interview session</p>
+              <Link href="/interview/setup" className="nf-btn nf-btn-primary px-8">
                 <Zap className="w-4 h-4" /> Start First Interview
               </Link>
             </div>
           ) : (
-            <div className="space-y-3 nf-stagger">
+            <div className="space-y-4 nf-stagger">
               {reports.map((r) => (
                 <Link key={r.report_id} href={`/report/${r.session_id}`}
-                  className="nf-card nf-card-hover p-5 flex items-center gap-4 group block"
-                  style={{ textDecoration: "none" }}>
+                  className="nf-card nf-card-hover p-6 flex items-center gap-6 group">
                   {/* Verdict icon */}
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: r.hire_decision ? "rgba(0,255,136,0.08)" : "rgba(255,45,120,0.08)", border: `1px solid ${r.hire_decision ? "rgba(0,255,136,0.2)" : "rgba(255,45,120,0.2)"}` }}>
+                  <div className="w-12 h-12 flex items-center justify-center shrink-0 bg-[var(--kz-straw)] border border-[var(--kz-ink)]">
                     {r.hire_decision
-                      ? <CheckCircle className="w-5 h-5" style={{ color: "var(--nf-green)" }} />
-                      : <XCircle className="w-5 h-5" style={{ color: "var(--nf-magenta)" }} />}
+                      ? <CheckCircle className="w-6 h-6 text-[var(--kz-moss)]" />
+                      : <XCircle className="w-6 h-6 text-[var(--kz-coral)]" />}
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="nf-heading" style={{ fontSize: "0.9rem" }}>{r.job_role}</p>
-                    <p className="nf-mono" style={{ fontSize: "0.72rem", color: "var(--nf-text-3)" }}>
+                    <p className="nf-heading text-lg text-[var(--kz-charcoal)]">{r.job_role}</p>
+                    <p className="nf-mono text-xs text-[var(--kz-text-2)] tracking-tight">
                       {r.company} · {new Date(r.created_at).toLocaleDateString()}
                     </p>
                   </div>
 
                   {/* Score */}
-                  <div className="text-right shrink-0">
-                    <p className="nf-heading" style={{ fontSize: "1.4rem", color: scoreColor(r.overall_score), textShadow: `0 0 12px ${scoreColor(r.overall_score)}60` }}>
+                  <div className="text-right shrink-0 pr-4">
+                    <p className="nf-heading text-2xl" style={{ color: scoreColor(r.overall_score) }}>
                       {r.overall_score.toFixed(1)}
                     </p>
-                    <p className="nf-mono" style={{ fontSize: "0.65rem", color: "var(--nf-text-3)" }}>out of 10</p>
+                    <p className="nf-mono text-[9px] text-[var(--kz-text-3)] tracking-[0.1em]">SCORE</p>
                   </div>
 
-                  <ArrowRight className="w-4 h-4 shrink-0 ml-1 transition-colors"
-                    style={{ color: "var(--nf-border)" }} />
+                  <ArrowRight className="w-5 h-5 shrink-0 transition-transform group-hover:translate-x-1 text-[var(--kz-text-3)]" />
                 </Link>
               ))}
             </div>
@@ -171,13 +167,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick action strip */}
-        <div className="nf-card p-4 mt-8 flex items-center gap-4">
-          <TrendingUp className="w-5 h-5 shrink-0" style={{ color: "var(--nf-cyan)" }} />
-          <p style={{ fontSize: "0.85rem", color: "var(--nf-text-2)" }}>
-            Ready to improve? Start a new session targeting your weakest round.
-          </p>
-          <Link href="/interview/setup" className="nf-btn nf-btn-primary ml-auto text-xs shrink-0" style={{ padding: "0.5rem 1rem" }}>
-            New Session <ArrowRight className="w-3.5 h-3.5" />
+        <div className="nf-card p-6 mt-12 flex items-center gap-6 border-[var(--kz-ink)] bg-white/30 backdrop-blur-sm">
+          <div className="w-10 h-10 flex items-center justify-center bg-[var(--kz-straw)] border border-[var(--kz-ink)]">
+            <TrendingUp className="w-5 h-5 text-[var(--kz-teal)]" />
+          </div>
+          <div>
+            <p className="text-sm text-[var(--kz-text-1)] font-medium">Continuous Improvement</p>
+            <p className="text-xs text-[var(--kz-text-3)]">Ready to improve? Start a new session targeting your weakest round.</p>
+          </div>
+          <Link href="/interview/setup" className="nf-btn nf-btn-primary ml-auto text-xs py-2 px-6">
+            New Session
           </Link>
         </div>
       </div>
